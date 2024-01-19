@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NikTube</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+        }
+        form {
+          margin: 20px;
+        }
+    </style>
+</head>
+<body bgcolor="#00ffff">
+<h2>File Upload</h2>
+
+<label for="musicFile">Upload Music File:</label>
+<input type="file" id="musicFile" accept="audio/*"><br><br>
+
+<label for="videoFile">Upload Video File:</label>
+<input type="file" id="videoFile" accept="video/*"><br><br>
+
+<button onclick="uploadFiles()">Upload Files</button>
+
+<script>
+    function uploadFiles() {
+      var musicFileInput = document.getElementById('musicFile');
+      var videoFileInput = document.getElementById('videoFile');
+
+      var musicFile = musicFileInput.files[0];
+      var videoFile = videoFileInput.files[0];
+
+      if (!musicFile || !videoFile) {
+        alert('Please select both music and video files.');
+        return;
+      }
+
+      var formData = new FormData();
+      formData.append('musicFile', musicFile);
+      formData.append('videoFile', videoFile);
+
+      // Replace 'http://localhost:8080' with the actual URL of your Spring Boot application
+      fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Files uploaded successfully!');
+        console.log(data);
+      })
+      .catch(error => {
+        alert('Error uploading files.');
+        console.error(error);
+      });
+    }
+</script>
+<hr><br><br>
+<a href="Streamer.html">Click here to watch videos or Listen Music from the Database</a>
+
+</body>
+</html>
